@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Real Stuf.™</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Datatype:wght@200..700&family=Inria+Serif:wght@400;700&family=Intel+One+Mono:wght@300;400&family=Covered+By+Your+Grace&display=swap" rel="stylesheet">
+
+  <!-- THE BROKEN SHOP. It is the main page (same file layout, same pictures) after it has gone wrong.
+       mainpage.css = the original page, fakeshop.css = how it is broken, fakefx.css = the haunting (graffiti, vignette, ghost cursor...) -->
+  <link rel="stylesheet" href="css/mainpage.css">
+  <link rel="stylesheet" href="css/retro.css">      <!-- the old-computer look (grey windows, CRT, taskbar) -->
+  <link rel="stylesheet" href="css/fakeshop.css">
+  <link rel="stylesheet" href="css/fakefx.css">
+</head>
+
+<body data-page="shop" data-retro-title="IM THE REAL ONE">
+
+  <div class="top">
+    <div class="announce g">
+      Join the Real Stuf. Community and get 15% off your next order
+    </div>
+
+    <nav class="nav">
+      <img class="logo" alt="Real Stuf.™" src="images/brand_logo_1.png">
+      <ul>
+        <li class="g">NEW IN</li>
+        <li class="g">MEN</li>
+        <li class="g">WOMEN</li>
+        <li class="g">KIDS</li>
+        <li class="g sale">SALE</li>
+      </ul>
+      <div class="icons">
+        <span class="me"><span class="mini-face" data-face></span><span data-name>you</span></span>
+        <img class="retail" alt="Search, wishlist, account and bag" src="images/retail-icons.png">
+      </div>
+    </nav>
+  </div>
+
+  <section class="hero">
+    <img class="bg" alt="" src="images/promo_poster.png">
+    <div class="hero-faces"><div class="hf" data-face></div><div class="hf" data-face></div><div class="hf" data-face></div></div>
+
+    <div class="copy">
+      <h1 class="g" data-text="CORE: PLAIN&SIMPLE">CORE: PLAIN&amp;SIMPLE</h1>
+      <p class="g">as real as it can get. </p>
+      <p class="again g">as real as it can get. as real as it can get. as real as it can get.</p>
+    </div>
+
+    <a class="btn" href="fakeproduct.html">BROWSE HERE</a>
+  </section>
+
+  <section class="best" id="best">
+    <h2 class="g" data-text="BROWSE BESTSELLER">BROWSE BESTSELLER</h2>
+    <div class="cards" id="cards"></div>          <!-- the cards are drawn by fakepage.js -->
+    <button class="scrollhint" id="scrollNext" type="button">Scroll &gt;&gt;</button>
+  </section>
+
+  <section class="strip" aria-label="Lookbook">
+    <img alt="" src="images/promo_card_1.png" data-face-img>
+    <img alt="" src="images/promo_card_2.png">
+    <img alt="" src="images/promo_card_3.png" data-face-img>
+    <img alt="" src="images/promo_card_4.png" data-face-img>
+  </section>
+
+  <section class="auth" id="auth">
+    <div class="tag" id="faceTag"><span class="face-fill" data-face></span></div>
+    <img class="stamp" alt="Authentic" src="images/stamp-authentic.png">
+
+    <div class="txt">
+      <h3 class="g" data-text="YOU’VE BEEN AUTHENTICATED!">YOU’VE BEEN AUTHENTICATED!</h3>
+      <div class="m">
+        Authenticated on this date<br>
+        <span class="red" id="date">DD/MM/YYYY</span>
+      </div>
+      <p class="m g">
+        You’ve proven yourself to be human! feel free to browse our website
+        <span class="red">:)</span>
+      </p>
+      <button class="auth-now" type="button">Authenticate Now</button>
+    </div>
+  </section>
+
+  <footer>
+    <img class="brand" alt="Real Stuf.™" src="images/brand_logo_1.png">
+    <p class="tagline g">A real website made by real people for real customers.</p>
+    <div class="cols">
+      <div><h4>HELP</h4><a href="#">Shipping &amp; Delivery</a><a href="#">Returns &amp; Refunds </a><a href="#">Contact Us</a></div>
+      <div><h4>SERVICES</h4><a href="#">Customer Care</a><a href="#">Store Locator</a></div>
+      <div><h4>LEGAL AREA</h4><a href="#">Terms &amp; Conditions</a><a href="#">Privacy Policy </a></div>
+    </div>
+    <div class="soc"><img class="socials" alt="Instagram, TikTok, X and Facebook" src="images/socials.png"></div>
+  </footer>
+
+  <script src="js/sfx.js"></script>
+  <script src="js/retro.js"></script>      <!-- CRT, taskbar, wrong clock and counter -->
+  <script src="js/fakepage.js"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product Authentication · Real Stuf.™</title>
+
+  <!-- VT323 = the old terminal text, Silkscreen = the little pixel title bars; Datatype stays for the brand -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Datatype:wght@200..700&family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+
+<body data-sfx-ui="off">
+
+  <!-- ===== THE SCREEN: everything below happens on an old computer ===== -->
+  <div class="desk" id="desk">
+
+    <!-- barely-there text in the background (subliminal). Edit the words in portal.css (.ghost) -->
+    <div class="ghost" aria-hidden="true"></div>
+
+    <!-- ACT 1: a setup wizard, like the installers everyone clicked through. Everything on it is a little too reassuring. -->
+    <section class="win wiz" id="gate">
+      <div class="title"><span class="tt">Real Stuf.™ Authenticity Wizard</span><span class="ctl"><b>_</b><b>□</b><b>×</b></span></div>
+      <div class="wiz-body">
+        <aside class="wiz-side">
+          <img class="logo" alt="Real Stuf.™" src="images/brand_logo_1.png">
+          <p>Step 1 of 3</p>
+        </aside>
+        <form class="wiz-main" id="codeForm" autocomplete="off">
+          <h1>Check that your product is real.</h1>
+          <p class="lede">It takes less than 10 seconds. Your purchase is protected.</p>
+
+          <label for="code">Enter the code on your care label:</label>
+          <input id="code" type="text" maxlength="32" placeholder="RS-0001-OF-0001" spellcheck="false">
+          <p class="hint" id="hint" aria-live="polite"></p>
+
+          <ul class="trust">
+            <li>Used by thousands of real customers</li>
+            <li>Not fake</li>
+            <li>100% real. Genuinely.</li>
+          </ul>
+
+          <div class="btns">
+            <button class="btn" type="button" disabled>&lt; Back</button>
+            <button class="btn def" id="verify" type="submit">Verify &gt;</button>
+            <button class="btn" id="cancel" type="button">Cancel</button>
+          </div>
+        </form>
+      </div>
+      <div class="status"><span>Ready.</span><span><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Help (it's real)</a></span></div>
+    </section>
+
+    <!-- ACT 2: the report. Evidence windows land on the shirt, the confidence falls, error boxes bury it. -->
+    <section class="win main" id="report" hidden>
+      <div class="title"><span class="tt">Authenticity Report - A Real T-shirt</span><span class="ctl"><b>_</b><b>□</b><b>×</b></span></div>
+      <div class="menu"><span>File</span><span>Edit</span><span>View</span><span>Proof</span><span>Help</span></div>
+
+      <div class="topbar">
+        <div class="conf">
+          <span>Authenticity Confidence:</span>
+          <div class="prog" id="meter"><i id="meterFill"></i></div>
+          <b><span id="confNum">100</span>%</b>
+        </div>
+        <p class="verdict" id="verdict">✓ AUTHENTIC</p>
+      </div>
+
+      <div class="stage" id="stage">
+        <svg class="lines" id="lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <img class="shirt" id="shirt" alt="A Real T-shirt" src="images/tshirt.png">   <!-- the flat picture: only used if the 3D model can't load -->
+        <canvas class="shirt3d" id="shirt3d" aria-label="A Real T-shirt, turning"></canvas>
+        <div id="tags"></div>
+        <div id="stamps"></div>
+      </div>
+
+      <p class="say" id="say" aria-live="polite"></p>
+
+      <div class="status">
+        <span>Authentication Checked: <b id="count">2</b>/102894706</span>
+        <span class="right">
+          <button class="btn again" id="again" type="button" hidden>Verify again</button>
+          <button class="mini" id="snd" type="button" aria-pressed="true">SND: ON</button>
+        </span>
+      </div>
+    </section>
+
+    <!-- ACT 3: the terminal. It gives up on the shirt and turns on the visitor. -->
+    <section class="win term" id="you" hidden>
+      <div class="title"><span class="tt">C:\REALSTUF\VERIFY.EXE</span><span class="ctl"><b>_</b><b>□</b><b>×</b></span></div>
+      <div class="term-body">
+        <p class="say big" id="youSay"></p>
+
+        <div class="record win" id="idcard" hidden>
+          <div class="title"><span class="tt">Customer Record</span><span class="ctl"><b>×</b></span></div>
+          <div class="rec-body">
+            <div class="idphoto" id="idphoto"></div>
+            <dl>
+              <dt>Product</dt><dd>A Real T-shirt</dd>
+              <dt>Serial Number</dt><dd id="idname">you</dd>
+              <dt>Status</dt><dd class="red">UNVERIFIED</dd>
+            </dl>
+          </div>
+        </div>
+
+        <button class="btn real" id="real" type="button" hidden>I am real.</button>
+        <a class="btn back" id="backShop" href="fakepage.html" hidden>Return to shop</a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- the taskbar: always there, always normal. Except the clock. -->
+  <div class="taskbar">
+    <span class="start"><b>■</b> Real Stuf.</span>
+    <span class="task" id="taskName">Authenticity Wizard</span>
+    <span class="tray"><span id="clock">12:00</span></span>
+  </div>
+
+  <!-- the old-screen layers sit on top of everything -->
+  <canvas class="noise" id="noise" width="160" height="120" aria-hidden="true"></canvas>
+  <div class="sub" id="sub" aria-hidden="true"></div>
+  <div class="scan" aria-hidden="true"></div>
+  <div class="roll" aria-hidden="true"></div>
+  <div class="vig" aria-hidden="true"></div>
+
+  <!-- three.js (the 3D library) comes from a CDN; the model is Models/tee.glb -->
+  <script type="importmap">
+  { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  } }
+  </script>
+  <script src="js/sfx.js"></script>
+  <script src="js/portal.js"></script>
+  <script type="module" src="js/shirt3d.js"></script>
+</body>
+</html>

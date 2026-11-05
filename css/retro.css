@@ -1,0 +1,158 @@
+/* =====================================================
+   retro.css : the BROKEN shop (fakepage.html, fakeproduct.html), on an old computer.
+   Loaded AFTER mainpage.css, so it overrides it (mainpage.css itself is untouched).
+   Same grey bevelled windows, pixel fonts and CRT as the authentication portal,
+   so the shop and the portal feel like the same machine.
+   To turn the look off: delete the retro.css <link> and retro.js <script> lines in fakepage.html and fakeproduct.html.
+   retro.js sets --retro (0 to 1) which makes the CRT stronger as the dread builds.
+   ===================================================== */
+:root {
+  --paper: #ece8dc;        /* aged paper instead of white */
+  --win: #c0c0c0;
+  --hi: #fff;
+  --mid: #808080;
+  --lo: #404040;
+  --navy: #000080;
+  --sky: #1084d0;
+  --pix: "Silkscreen", "VT323", monospace;
+  --txt: "VT323", "Courier New", monospace;
+  --retro: .5;
+  --grey: #c0c0c0;
+}
+
+body {
+  background: var(--paper);
+  padding-bottom: 34px;                   /* room for the taskbar */
+  /* an old pixel arrow instead of the modern one */
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='22' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h2v2h2v2h2v2h2v2h2v2h2v2H8v2h2v2h2v4H8v-4H6v-2H4v-2H2v2H0z' fill='%23000'/%3E%3Cpath d='M1 2v14h1v-2h1v-2h1v-2h4V9H7V7H6V5H5V3H4V2z' fill='%23fff' transform='translate(0 0)'/%3E%3C/svg%3E") 0 0, auto;
+}
+a, button, .card, .btn, .scrollhint {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='22' shape-rendering='crispEdges'%3E%3Cpath d='M6 0h3v8h1V6h3v2h1V7h3v2h1v8l-2 4H7l-5-8 2-2 2 2z' fill='%23000'/%3E%3Cpath d='M7 1h1v9H6V6H5l-2 3 4 8h8l1-3V10h-1V9h-1v2h-1V8h-1v3h-1V8H9V1z' fill='%23fff'/%3E%3C/svg%3E") 7 0, pointer;
+}
+
+/* ---------- the bevelled look ---------- */
+.bevel, .nav, .card .box, .hero .btn, .footer-win {
+  box-shadow: inset 1px 1px 0 var(--hi), inset -1px -1px 0 var(--lo), inset 2px 2px 0 #dfdfdf, inset -2px -2px 0 var(--mid);
+}
+
+/* ---------- top: a title bar and a toolbar ---------- */
+.announce {
+  background: linear-gradient(90deg, var(--navy), var(--sky));
+  color: #fff;
+  height: 30px;
+  font: 400 15px/1 var(--pix);
+  letter-spacing: .5px;
+  text-shadow: 1px 1px 0 #000;
+  justify-content: flex-start;
+  padding: 0 40px 0 14px;
+}
+.announce::before { content: "▣"; margin-right: 10px; }
+.announce .x { top: 7px; right: 10px; }
+.announce .x path { stroke: #fff; }
+.nav { background: var(--win); border-bottom: 0; height: 62px; }
+.nav .logo { filter: grayscale(1) contrast(1.25); image-rendering: pixelated; }
+.nav ul { font: 400 22px var(--txt); text-transform: uppercase; gap: 44px; }
+.nav li { cursor: inherit; padding: 2px 6px; }
+.nav li:hover { background: var(--navy); color: #fff; }
+.nav li.sale { color: #b00000; }
+.icons img { filter: grayscale(1) contrast(1.3); image-rendering: pixelated; }
+
+/* ---------- hero: a scanned poster ---------- */
+.hero img.bg { filter: sepia(.45) contrast(1.2) saturate(.65) brightness(.9); }
+.hero::after { background: rgba(0, 0, 0, .55); }
+.hero::before {                              /* a halftone dot pattern over the picture */
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .35;
+  background: radial-gradient(#000 35%, transparent 36%) 0 0 / 4px 4px;
+}
+.hero h1 { font: 400 56px/1.15 var(--pix); letter-spacing: 1px; text-shadow: 3px 0 rgba(255, 0, 0, .55), -3px 0 rgba(0, 255, 255, .45); }
+.hero p { font: 400 32px/1.2 var(--txt); }
+.hero .btn { background: var(--win); color: #000; font: 400 22px var(--pix); }
+.hero .btn:active { box-shadow: inset 1px 1px 0 var(--lo), inset -1px -1px 0 var(--hi); }
+
+/* ---------- headings ---------- */
+.best h2 { font: 400 28px var(--pix); letter-spacing: 1px; }
+.best h2::after { content: ""; display: block; width: 360px; max-width: 80%; height: 4px; margin: 12px auto 0; border-top: 1px solid #000; border-bottom: 1px solid #000; }
+
+/* ---------- cards: little windows ---------- */
+.card .box { background: #f4f1e8; border: 1px solid #000; }
+.card .pic img { filter: sepia(.35) contrast(1.15) saturate(.75); }
+.card .hover img { filter: grayscale(.7) contrast(1.2); }
+.card .name { font: 400 26px var(--txt); letter-spacing: .5px; }
+.card .price { font: 400 18px var(--pix); color: #b00000; }
+.card .code { font: 400 22px var(--txt); color: #6a6a6a; }
+.card .hover span { font: 400 20px var(--pix); }
+.scrollhint { font: 400 24px var(--txt); }
+
+/* ---------- lookbook ---------- */
+.strip { gap: 6px; background: #000; padding: 6px 0; }
+.strip img { filter: sepia(.4) contrast(1.15) saturate(.7); }
+
+/* ---------- the authenticated block is a window (the same one the portal uses) ---------- */
+.auth { background: var(--win); border-top: 2px solid var(--hi); border-bottom: 2px solid var(--lo); }
+.auth::before {
+  content: "AUTHENTICATION STATUS.EXE"; position: absolute; left: 3px; right: 3px; top: 3px; height: 26px; z-index: 3;
+  background: linear-gradient(90deg, var(--navy), var(--sky)); color: #fff; font: 400 14px/26px var(--pix); padding-left: 10px; letter-spacing: .5px;
+}
+.auth .tag { background: #fff; box-shadow: inset 2px 2px 0 var(--mid), inset -2px -2px 0 var(--hi); }
+.auth h3 { font: 400 28px var(--pix); }
+.auth .m { font: 400 26px/1.15 var(--txt); }
+.auth .red, .red { color: #b00000; }
+.auth .stamp { filter: contrast(1.2) saturate(.8); }
+
+/* ---------- footer ---------- */
+footer { background: var(--win); border-top: 2px solid var(--hi); font-family: var(--txt); }
+footer .brand { filter: grayscale(1) contrast(1.2); image-rendering: pixelated; }
+footer .tagline { font: 400 20px/1.15 var(--txt); }
+footer .cols { --col-w: 215px; font: 400 18px/20px var(--txt); }
+footer .cols a { white-space: nowrap; }
+footer .cols h4 { font: 400 14px var(--pix); }
+footer .soc img { filter: grayscale(1) contrast(1.3); image-rendering: pixelated; }
+.counter {
+  position: absolute; left: 37px; top: 188px; z-index: 2; white-space: nowrap;
+  font: 400 22px var(--txt); background: #000; color: #0f0; padding: 2px 10px; border: 2px inset #808080; letter-spacing: 2px;
+}
+.counter.bad { color: #f33; }
+
+/* ---------- the taskbar (always on screen) ---------- */
+.taskbar {
+  position: fixed; left: 0; right: 0; bottom: 0; height: 34px; z-index: 45;
+  background: var(--win); border-top: 2px solid var(--hi); box-shadow: 0 -1px 0 var(--mid);
+  display: flex; align-items: center; gap: 6px; padding: 3px 6px; font: 400 20px var(--txt); color: #000;
+}
+.taskbar .start, .taskbar .win-btn, .taskbar .tray {
+  height: 26px; display: flex; align-items: center; padding: 0 10px; background: var(--win);
+  box-shadow: inset 1px 1px 0 var(--hi), inset -1px -1px 0 var(--lo), inset 2px 2px 0 #dfdfdf, inset -2px -2px 0 var(--mid);
+}
+.taskbar .start { font: 400 14px var(--pix); gap: 8px; }
+.taskbar .start i { width: 12px; height: 12px; background: #b00000; display: inline-block; }
+.taskbar .win-btn { min-width: 220px; max-width: 40vw; box-shadow: inset 1px 1px 0 var(--lo), inset -1px -1px 0 var(--hi); background: repeating-conic-gradient(#dcdcdc 0 25%, #c8c8c8 0 50%) 0 0 / 2px 2px; font-weight: 700; overflow: hidden; white-space: nowrap; }
+.taskbar .tray { margin-left: auto; box-shadow: inset 1px 1px 0 var(--mid), inset -1px -1px 0 var(--hi); min-width: 84px; justify-content: center; }
+.toast { bottom: 48px; }                    /* popups sit above the taskbar */
+#sfxToggle { bottom: 42px !important; }
+
+/* ---------- the CRT over everything (the vignette and ghost cursor from mainpage.css stay as they are) ---------- */
+.crt { position: fixed; inset: 0; pointer-events: none; z-index: 100; }
+.crt-scan { background: repeating-linear-gradient(0deg, rgba(0, 0, 0, calc(.10 + var(--retro) * .16)) 0 1px, transparent 1px 3px); }
+.crt-noise { width: 100%; height: 100%; image-rendering: pixelated; opacity: calc(.03 + var(--retro) * .07); mix-blend-mode: overlay; }
+.crt-roll { height: 140px; inset: auto 0 auto 0; top: -140px; background: linear-gradient(180deg, transparent, rgba(255, 255, 255, .07), transparent); animation: crtroll 7s linear infinite; }
+.crt-glow { background: radial-gradient(ellipse at center, transparent 62%, rgba(0, 0, 0, calc(.18 + var(--retro) * .25)) 100%); }
+@keyframes crtroll { to { top: 100%; } }
+.crt-flash { z-index: 101; display: none; place-items: center; background: #000; color: #fff; font: 400 clamp(60px, 14vw, 220px)/1 var(--pix); text-align: center; letter-spacing: -2px; }
+.crt-flash.on { display: grid; }
+.crt-flash.red { background: #b00000; }
+.crt-flip { z-index: 102; display: none; background: #fff; mix-blend-mode: difference; }
+.crt-flip.on { display: block; }
+.crt-boot { z-index: 110; background: #000; animation: boot .9s steps(9) forwards; }
+@keyframes boot { 0% { opacity: 1; } 55% { opacity: .85; } 70% { opacity: .5; } 100% { opacity: 0; visibility: hidden; } }
+
+/* whole page shudders for a frame now and then */
+body.jolt .top, body.jolt .hero, body.jolt .best, body.jolt .strip, body.jolt .auth, body.jolt footer { translate: 4px 0; }
+body.jolt .hero h1 { text-shadow: 7px 0 rgba(255, 0, 0, .7), -7px 0 rgba(0, 255, 255, .6); }
+
+@media (max-width: 900px) {
+  .taskbar .win-btn { min-width: 0; flex: 1; }
+  .nav ul { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .crt-roll, .crt-boot { display: none; }
+}

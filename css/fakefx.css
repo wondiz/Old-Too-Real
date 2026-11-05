@@ -1,0 +1,79 @@
+/* =====================================================
+   fakefx.css — the haunting shared by the whole broken shop
+   (graffiti, loose faces, tearing text, vignette, ghost cursor, popups, the angry screen)
+   Used by fakepage.html and fakeproduct.html.
+   ===================================================== */
+:root {
+  --red-l: #ff3b3b;
+  --red-d: #7a0505;
+  --pink:  #ffd3d3;
+  --ink:   #1a0000;
+  --marker: 'Covered By Your Grace', 'Permanent Marker', cursive;
+  --dread: .8;
+}
+/* ---------- the graffiti and faces that get scattered over the page by fakepage.js ---------- */
+.graf { position: absolute; z-index: 20; pointer-events: none; font: 400 100px/1 var(--marker); color: #fff; white-space: nowrap; text-shadow: 3px 3px 0 #000; -webkit-text-stroke: 1.2px currentColor; mix-blend-mode: normal; user-select: none; }
+.graf.k { color: #000; text-shadow: none; }
+.graf.p { color: var(--pink); }
+.loose { position: absolute; z-index: 15; pointer-events: none; background: #000 center / cover; filter: grayscale(1) contrast(1.4); border: 4px solid #fff; box-shadow: 8px 8px 0 rgba(0,0,0,.6); opacity: .92; }
+.loose video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); filter: grayscale(1) contrast(1.3); display: block; }
+.loose .rec { position: absolute; left: 6px; top: 5px; font: 14px/1 var(--mono); background: rgba(0,0,0,.6); color: #fff; padding: 2px 5px; }
+
+/* the page shaking apart */
+.g.tear { animation: tear .11s steps(2) 1; }
+@keyframes tear {
+  0% { transform: translateX(-9px) skewX(8deg); clip-path: inset(0 0 55% 0); }
+  50% { transform: translateX(11px) skewX(-6deg); clip-path: inset(40% 0 0 0); }
+  100% { transform: none; clip-path: none; }
+}
+.g.ghosting::before { content: attr(data-text); position: absolute; left: 3px; top: 0; color: #0ff; mix-blend-mode: screen; opacity: .6; pointer-events: none; }
+body.shiver { animation: shiver .12s steps(2) 1; }
+@keyframes shiver { 0% { translate: 3px -2px; } 50% { translate: -4px 1px; } 100% { translate: 0 0; } }
+body.flip { filter: invert(1) hue-rotate(180deg); }
+
+/* ---------- the same vignette, ghost cursor and popups as the main page (but already at full strength) ---------- */
+body::after {
+  --clear-start: 46%; --clear-shrink: 26%;
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50;
+  background: radial-gradient(ellipse at var(--mx, 50%) var(--my, 50%),
+    transparent calc(var(--clear-start) - var(--dread) * var(--clear-shrink)),
+    rgba(0, 0, 0, calc(var(--dread) * .72)) 100%);
+}
+.ghost { position: fixed; left: 0; top: 0; z-index: 60; width: 18px; height: 24px; opacity: 1; pointer-events: none; will-change: transform; filter: drop-shadow(2px 0 var(--red-l)) drop-shadow(-2px 0 #0ff); }
+.ghost svg { display: block; }
+.ghost-ring { position: fixed; z-index: 60; width: 14px; height: 14px; margin: -7px 0 0 -7px; border: 1px solid #fff; border-radius: 0 100% 0 100%; pointer-events: none; animation: ring .8s ease-out forwards; }
+.ghost-ring::after { content: ""; position: absolute; inset: 28%; border: 1px solid #fff; border-radius: 50%; }
+@keyframes ring { from { transform: rotate(-45deg) scale(1); opacity: .7; } to { transform: rotate(-45deg) scale(7); opacity: 0; } }
+.toast { position: fixed; z-index: 55; width: 300px; padding: 12px 14px; background: #000; color: #fff; border: 2px solid #fff; font: 700 15px/1.3 var(--data); pointer-events: none; opacity: 0; transition: opacity .15s; }
+.toast.show { opacity: 1; }
+.toast.red { background: var(--red-l); border-color: #000; color: #000; }
+
+/* ---------- ARE YOU MOCKING US? ---------- */
+.rage { position: fixed; inset: 0; z-index: 100; background: #e00000; display: grid; place-items: center; padding: 6vw; cursor: pointer; }
+.rage p { margin: 0; font: 400 clamp(40px, 8vw, 124px)/1 var(--marker); color: #fff; text-shadow: 5px 5px 0 #000; -webkit-text-stroke: 1.5px #fff; text-transform: uppercase; max-width: 22ch; text-align: left; }
+.rage p::after { content: "▌"; animation: blink .6s steps(2) infinite; }
+.rage.done p::after { content: ""; }
+.rage small { position: absolute; bottom: 4vh; font: 300 14px var(--mono); color: #fff; opacity: .7; }
+@keyframes blink { 50% { opacity: 0; } }
+.rage.shake { animation: shake .09s steps(2) infinite; }
+@keyframes shake { 0% { translate: 5px 0; } 100% { translate: -5px 2px; } }
+
+
+@media (max-width: 900px) { .toast { width: calc(100vw - 24px); } }
+@media (prefers-reduced-motion: reduce) { .g.tear, body.shiver, .ghost-ring { animation: none; } }
+
+/* popups: also correct on pages that load mainpage.css (which gives .toast a bottom edge and a slide-in) */
+.toast { bottom: auto; right: auto; height: auto; transform: none; border-radius: 0; transition: opacity .15s; }
+.toast.show { transform: none; }
+
+/* ---------- being thrown out ---------- */
+.kick { position: fixed; inset: 0; z-index: 150; background: rgba(0, 0, 0, .94); display: grid; place-items: center; padding: 6vw; }
+.kick p { margin: 0; font: 400 clamp(36px, 6.8vw, 96px)/1.15 var(--marker); color: #fff; text-shadow: 4px 4px 0 #000; -webkit-text-stroke: 1.2px #fff; max-width: min(92vw, 1400px); text-align: center; overflow-wrap: break-word; }
+.kick p::after { content: "\258C"; animation: blink .6s steps(2) infinite; }
+.kick.leave { background: #d00000; }
+.kick.leave p { font-size: clamp(90px, 26vw, 420px); max-width: none; letter-spacing: -2px; text-align: center; }
+.kick.leave p::after { content: ""; }
+.dead { position: fixed; inset: 0; z-index: 200; background: #000; color: #9a9a9a; display: grid; place-content: center; text-align: center; gap: 6px; font: 400 26px/1.2 'VT323', 'Courier New', monospace; }
+.dead p { margin: 0; }
+.dead .d404 { font-size: 120px; color: #fff; }
+.dead .tiny { margin-top: 18px; font-size: 18px; color: #444; }

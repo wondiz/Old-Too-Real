@@ -1,0 +1,536 @@
+/* =====================================================
+   welcome.css : the welcome popup and the red screens
+   ===================================================== */
+
+/* the vignette and the ghost cursor are switched off while the welcome popup is up */
+body.modal-open::after {
+  opacity: 0;
+}
+
+body.modal-open .ghost,
+body.modal-open .ghost-ring {
+  display: none;
+}
+
+/* =====================================================
+   WELCOME POPUP  (from the Figma "Join the Real Stuf. Community" frame)
+   ===================================================== */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 58;                    /* over the page and the social-proof popups, under the ghost cursor */
+  display: grid;
+  place-items: center;
+  padding: 16px;                  /* equal on every side, so the box sits dead centre */
+  background: rgba(0, 0, 0, .4);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .5s ease, visibility 0s linear .5s;
+}
+
+.modal.open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .5s ease;
+}
+
+/* the page behind the popup turns red as the stages go on (--red-level, 0 to 1) */
+.modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #ef1111;
+  opacity: var(--red-level, 0);
+  transition: opacity .9s ease;
+  pointer-events: none;
+}
+
+/* the last stage ("fine. you were never real."): no popup, just white words in the middle of a red screen */
+.modal.final {
+  background: #ef1111;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.modal.final::before { opacity: 1; transition: none; }
+.modal.final .modal-box { background: transparent; min-height: 0; padding: 0; color: #fff; justify-content: center; }
+.modal.final .modal-eye,
+.modal.final .modal-x,
+.modal.final .modal-join,
+.modal.final .modal-no { display: none; }
+.modal.final .modal-box h2 { font-size: clamp(40px, 7vw, 96px); color: #fff; }
+.modal.final .modal-box p { margin-top: 18px; font-size: clamp(20px, 3vw, 36px); color: #fff; }
+
+/* very short windows: leave room above the box for the eye so it isn't cut off */
+@media (max-height: 560px) {
+  .modal {
+    padding-top: 100px;
+  }
+}
+
+body.modal-open {
+  overflow: hidden;               /* page doesn't scroll behind it */
+}
+
+.modal-box {
+  position: relative;
+  width: min(631px, 100%);
+  min-height: 419px;
+  padding: 75px 24px 70px;
+  background: #fff;
+  color: var(--red);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  outline: none;
+}
+
+.modal-eye {
+  position: absolute;
+  left: 50%;
+  top: -83px;
+  width: 76px;
+  height: 76px;
+  margin-left: -38px;
+}
+
+.modal-x {
+  position: absolute;
+  top: 12px;
+  right: 13px;
+  width: 31px;
+  height: 31px;
+  cursor: pointer;
+  touch-action: none;             /* so holding it on a phone doesn't scroll or select */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.modal-x svg {
+  display: block;
+  width: 31px;
+  height: 31px;
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 1.4;
+}
+
+.modal-box h2 {
+  font: 400 36px/1.2 var(--data);
+}
+
+.modal-box p {
+  margin-top: 20px;
+  font: 400 16px/1.3 var(--data);
+}
+
+.modal-join {
+  width: 207px;
+  height: 62px;
+  margin-top: 80px;
+  background: #fff;
+  border: 1px solid var(--red);
+  color: var(--red);
+  font: 400 20px var(--data);
+}
+
+.modal-join:hover,
+.modal-join:focus-visible {
+  background: var(--red);
+  color: #fff;
+}
+
+.modal-no {
+  margin-top: 21px;
+  color: var(--red);
+  font: 400 15px/19px var(--data);
+}
+
+.modal-no:hover,
+.modal-no:focus-visible {
+  text-decoration: underline;
+}
+
+/* THE RED SCREENS: the flash when you try to close the popup, and the final "LEAVE."
+   They appear instantly (no fade). Each one shows once and never strobes. */
+.alert {
+  position: fixed;
+  inset: 0;
+  z-index: 70;                    /* above everything, including the ghost cursor */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12vh 24px 8vh;
+  background: #ef1111;
+  color: #fff;
+  text-align: center;
+  font-family: var(--data);
+  visibility: hidden;
+  cursor: default;
+}
+
+.alert.show {
+  visibility: visible;
+}
+
+.alert-eye {
+  width: clamp(80px, 11vw, 150px);
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.alert-title {
+  margin-top: 28px;
+  font-size: clamp(18px, 2.6vw, 30px);
+  font-weight: 400;
+}
+
+.alert-lines {
+  margin-top: 6px;
+  font-size: clamp(20px, 2.8vw, 32px);
+  line-height: 1.25;
+}
+
+.alert-foot {
+  margin-top: auto;
+  font-size: clamp(20px, 2.8vw, 32px);
+}
+
+/* The final screen: just LEAVE, big and tall like the Figma.
+   welcome.js sizes it to the window (fitLeave): wide first, then stretched tall. */
+.alert.alert-end {
+  justify-content: center;
+  padding: 0;
+}
+
+.alert-leave {
+  display: inline-block;
+  font-size: 24vw;                /* only until welcome.js has measured it */
+  font-weight: 300;               /* lighter, because stretching it tall thickens the horizontal bars */
+  line-height: 1;
+  white-space: nowrap;
+  transform-origin: center;
+}
+
+/* THE "AUTHENTICATING" SCREEN (after Join Now): red, an eye with a pupil that follows the cursor, typed text */
+.alert.alert-auth {
+  justify-content: center;
+  padding: 0;
+  background: #ff0a0a;
+}
+
+.alert.alert-auth {
+  overflow: hidden;
+}
+
+.auth-eye {
+  position: absolute;             /* fills the whole screen, cropping the edges if the shape differs */
+  left: 50%;
+  top: 50%;
+  width: max(100vw, 143.98vh);    /* "cover": 143.98 = your PNG's width / height x 100 (1555 / 1080) */
+  aspect-ratio: 1555 / 1080;      /* change both numbers if your PNG has another shape */
+  transform: translate(-50%, -50%);
+}
+
+.auth-eye img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.auth-stack {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 51%;
+}
+
+/* the stand-in blink (used until your own frames are added): the whole eye squashes shut and opens again */
+.auth-stack.blinking {
+  animation: lid-blink .5s ease-in-out;
+}
+
+@keyframes lid-blink {
+  0%   { transform: scaleY(1); }
+  45%  { transform: scaleY(.03); }
+  55%  { transform: scaleY(.03); }
+  100% { transform: scaleY(1); }
+}
+
+.auth-blink {
+  visibility: hidden;
+}
+
+.auth-blink.on {
+  visibility: visible;
+}
+
+.auth-white {
+  filter: url(#knockRed);         /* turns the red of eye-white.png see-through, so the photo shows behind the scribbles */
+}
+
+/* the photo, clipped to the eye opening. Tune the shape here: ellipse(width height at x y) */
+.auth-photo {
+  position: absolute;
+  inset: 0;
+  clip-path: ellipse(35% 32% at 50% 51%);
+  background: #d9d9d9;
+  visibility: hidden;
+}
+
+.auth-photo.show {
+  visibility: visible;
+  animation: snap .35s steps(3, end);   /* a flash when the picture appears */
+}
+
+/* a child set to "visible" would still show through its hidden parent, so say it plainly */
+.alert-auth:not(.show) .auth-photo {
+  visibility: hidden;
+}
+
+@keyframes snap {
+  0%   { filter: brightness(4); }
+  100% { filter: none; }
+}
+
+.auth-photo img {
+  position: absolute;             /* sized to the eye opening, so you see the whole camera picture, not a zoomed-in middle */
+  left: 15%;
+  top: 19%;
+  width: 70%;
+  height: 64%;
+  object-fit: cover;
+  transform: scaleX(-1);          /* mirrored, like a mirror would show them */
+  /* filter: grayscale(.6) contrast(1.2);   <- un-comment for a colder, creepier photo */
+}
+
+.auth-photo img:not([src]) {
+  display: none;
+}
+
+.auth-silhouette {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #8a8a8a;
+  stroke-width: 1.2;
+}
+
+.auth-photo.has-photo .auth-silhouette {
+  display: none;
+}
+
+.auth-pupil {
+  will-change: transform;         /* welcome.js moves this one */
+  transform-origin: 44% 56%;      /* where the pupil sits in the picture, so it shrinks around itself */
+}
+
+/* the question and the yes / no buttons sit together at the bottom, centred.
+   To move them, change bottom / left / transform here (e.g. bottom: 50%; for the middle of the eye) */
+.auth-bottom {
+  position: absolute;
+  left: 50%;
+  bottom: 4vh;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: 92vw;
+}
+
+.auth-choices {
+  display: flex;
+  gap: 28px;
+  visibility: hidden;             /* they appear once the question has finished typing */
+}
+
+.auth-choices.show {
+  visibility: visible;
+}
+
+.auth-choice {
+  min-width: 110px;
+  padding: .3em 1.2em;
+  background: #ff0a0a;            /* red patch so they read over the scribbles */
+  border: 1px solid #000;
+  color: #000;
+  font: 400 clamp(16px, 2.2vw, 26px) var(--mono);
+  cursor: pointer;
+}
+
+.auth-choice:hover,
+.auth-choice:focus-visible {
+  background: #000;
+  color: #fff;
+  outline: none;
+}
+
+.auth-type {
+  max-width: 92vw;
+  padding: .15em .5em;
+  background: #ff0a0a;            /* keeps the words readable over the scribbles */
+  font-family: var(--mono);
+  font-size: clamp(16px, 2.4vw, 30px);
+  color: #000;
+  white-space: nowrap;
+}
+
+/* THE "AUTHENTICATION COMPLETE" SCREEN: plain red, big typed words, then it glitches away */
+.alert.alert-done {
+  justify-content: center;
+  padding: 0 6vw;
+  background: #ff0a0a;
+}
+
+/* the screen is a little terminal: each line starts with ">" and is typed out.
+   The name is typed on the SAME line as the command. */
+.term {
+  width: min(1100px, 100%);
+  text-align: left;
+}
+
+.term-line {
+  margin: 0;
+  font: 400 clamp(18px, 2.6vw, 36px)/1.6 var(--mono);
+  color: #000;
+  overflow-wrap: anywhere;
+}
+
+.term-line::before {
+  content: "> ";
+}
+
+.term-name {
+  margin-left: .5ch;
+}
+
+.term-input {
+  margin: 0 0 0 .5ch;
+  padding: 0;
+  width: 2ch;                     /* grows as they type (welcome.js) */
+  max-width: 100%;
+  border: 0;
+  border-bottom: 2px solid #000;
+  border-radius: 0;
+  background: transparent;
+  color: #000;
+  caret-color: #000;
+  font: inherit;
+  outline: none;
+}
+
+.term-input.nope {
+  animation: nope .3s steps(2, end);   /* an empty name gets a little shake */
+}
+
+@keyframes nope {
+  0%   { transform: translateX(-6px); }
+  50%  { transform: translateX(6px); }
+  100% { transform: none; }
+}
+
+.auth-type::after,
+.term-line.active .t::after {     /* blinking typewriter cursor */
+  content: "";
+  display: inline-block;
+  width: .55em;
+  height: 1em;
+  margin-left: .15em;
+  vertical-align: -.12em;
+  background: #000;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+@media (max-width: 600px) {
+  .auth-type { white-space: normal; text-align: center; }
+}
+
+/* a small jolt each time the popup gets worse */
+.modal-box.jolt {
+  animation: jolt .3s steps(2, end);
+}
+
+@keyframes jolt {
+  0%   { transform: translate(-6px, 3px); }
+  50%  { transform: translate(5px, -3px); }
+  100% { transform: none; }
+}
+
+@media (max-width:600px) {
+  .modal-box {
+      padding: 64px 16px 48px;
+    }
+
+  .modal-box h2 {
+      font-size: 26px;
+    }
+
+  .modal-join {
+      margin-top: 40px;
+    }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .modal, .modal.open, .modal::before {
+      transition: none;
+    }
+
+  .modal-box.jolt {
+      animation: none;
+    }
+}
+
+
+/* THE "THANK YOU" SCREEN (between Join Now and the eye): plain, black and quiet on purpose, so the red that follows hits harder.
+   welcome.js types its three lines one after another. */
+.alert.alert-thanks {
+  justify-content: center;
+  padding: 0 24px;
+  background: #000;
+  color: #fff;
+}
+
+.thanks-line {
+  max-width: 680px;
+  min-height: 1.25em;
+}
+
+.thanks-big {
+  font: 400 clamp(22px, 3vw, 34px)/1.25 var(--data);
+}
+
+.thanks-small {
+  max-width: 560px;
+  margin-top: 16px;
+  font: 400 clamp(15px, 1.7vw, 19px)/1.5 var(--data);
+  color: #d4d4d4;
+}
+
+.thanks-count {
+  margin-top: 28px;
+  font: 400 clamp(15px, 1.7vw, 19px)/1.5 var(--data);
+  color: #fff;
+}
+
+.thanks-line.active::after {      /* blinking typewriter cursor */
+  content: "";
+  display: inline-block;
+  width: .55em;
+  height: 1em;
+  margin-left: .15em;
+  vertical-align: -.12em;
+  background: currentColor;
+  animation: blink 1s steps(1) infinite;
+}

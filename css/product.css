@@ -1,0 +1,326 @@
+/* =====================================================
+   product.css : only what is new on the product page.
+   The nav, cards, footer and creepy effects come from mainpage.css.
+   Built from the Figma "A Real T-shirt" frame.
+   ===================================================== */
+
+/* the photos on the left, the details on the right */
+.pdp {
+  position: relative;             /* the scattered lines are placed against this */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 366px;
+  align-items: start;
+}
+
+/* =====================================================
+   PHOTOS  (2 columns x 3 rows, row heights from the Figma)
+   ===================================================== */
+.pdp-photos {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 567fr 601fr 588fr;
+  aspect-ratio: 914 / 1756;
+}
+
+.pdp-photos img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 0;
+}
+
+/* =====================================================
+   DETAILS PANEL  (stays on screen while the photos scroll)
+   ===================================================== */
+.pdp-info {
+  position: sticky;
+  top: 101px;                      /* just under the sticky nav (40px bar + 61px nav) */
+  padding: 24px 24px 40px;
+  font-family: var(--data);
+  font-weight: 400;
+}
+
+.back {
+  display: block;
+  font-size: 15px;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+.title {
+  margin-top: 25px;
+  font: 400 24px/1 var(--data);
+}
+
+.price {
+  margin-top: 11px;
+  font: 400 24px/1 var(--data);
+  color: var(--red);
+}
+
+.price span {
+  margin-left: 1em;
+  font-size: 15px;
+  color: #5b5b5b;
+}
+
+.swatch {
+  width: 40px;
+  height: 67px;
+  margin-top: 41px;
+  border: .5px solid var(--red);
+  overflow: hidden;
+}
+
+.swatch img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.colour {
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 26px;
+  color: #5b5b5b;
+}
+
+.colour b {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+}
+
+.size-btn,
+.restock {
+  display: block;
+  width: 315px;
+  max-width: 100%;
+  height: 45px;
+  font: 400 15px var(--data);
+}
+
+.size-btn {
+  margin-top: 17px;
+  background: #fff;
+  border: 1px solid #000;
+}
+
+.size-btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+.restock {
+  margin-top: 5px;
+  background: var(--grey);
+  color: #6e6e6e;
+  cursor: not-allowed;
+}
+
+.sold,
+.worried {
+  font-size: 13px;
+  line-height: 20px;
+  color: #6e6e6e;
+}
+
+.sold {
+  margin-top: 8px;
+}
+
+/* the number in "1 out of 1" flickers red when it changes */
+#soldNum.slip {
+  animation: slip .5s steps(4, end);
+}
+
+@keyframes slip {
+  0%, 50% { color: var(--red); background: #000; }
+  25%, 75% { color: #6e6e6e; background: none; }
+  100% { color: var(--red); background: none; }
+}
+
+/* The photos change slowly, one at a time (product.js). Each gets its own look.
+   Tweak any of these filters, or add more. */
+.pdp-photos img {
+  transition: filter 4s ease;
+}
+
+.pdp-photos img.fx1 { filter: grayscale(1) contrast(1.25); }
+.pdp-photos img.fx2 { filter: sepia(1) saturate(5) hue-rotate(-50deg) brightness(.85); }   /* red */
+.pdp-photos img.fx3 { filter: contrast(1.7) brightness(.65) saturate(.6); }
+.pdp-photos img.fx4 { filter: hue-rotate(110deg) saturate(2.2); }
+.pdp-photos img.fx5 { filter: invert(1) hue-rotate(180deg) contrast(.9); }                 /* negative */
+.pdp-photos img.fx6 { filter: grayscale(.6) sepia(.7) brightness(.55) contrast(1.4); }
+
+/* the model photo that has become the visitor: a little colder, and mirrored like a mirror would show */
+.pdp-photos img.is-you {
+  transform: scaleX(-1);
+  filter: grayscale(.35) contrast(1.08);
+}
+
+/* The lines the site scatters across the page as the photos change (product.js adds these).
+   Size, tilt, font and position are random for each one. */
+.scrap {
+  position: absolute;
+  z-index: 5;                     /* over the photos, under the sticky nav */
+  max-width: 34%;
+  color: #000;
+  line-height: 1.15;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  pointer-events: none;           /* never gets in the way of a click */
+  user-select: none;
+}
+
+.scrap.show {
+  opacity: 1;
+}
+
+.scrap.flip {
+  color: #fff;
+  mix-blend-mode: difference;     /* readable on any photo */
+}
+
+.scrap.red {
+  color: var(--red);
+}
+
+/* DESCRIPTIONS / DETAILS / SHIPPING AND RETURNS */
+.acc {
+  width: 315px;
+  max-width: 100%;
+  margin-top: 8px;
+}
+
+.acc.first {
+  margin-top: 30px;
+}
+
+.acc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 35px;
+  border-bottom: .5px solid #000;
+  font: 200 13px var(--data);
+  text-align: left;
+}
+
+.acc-head svg {
+  width: 24px;
+  height: 24px;
+  transition: transform .25s ease;
+}
+
+.acc-head[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.acc-body {
+  max-height: 0;
+  overflow: hidden;
+  font: 400 13px/1.5 var(--data);
+  color: #6e6e6e;
+  transition: max-height .3s ease, padding .3s ease;
+}
+
+.acc-head[aria-expanded="true"] + .acc-body {
+  max-height: 140px;
+  padding: 10px 0 4px;
+}
+
+.worried {
+  margin-top: 41px;
+}
+
+.auth-slot {
+  height: 45px;                   /* keeps its space when the button runs off */
+  margin-top: 11px;
+}
+
+.auth-btn {
+  display: block;
+  width: 193px;
+  height: 45px;
+  background: var(--red);
+  border: 1px solid #fff;
+  color: #fff;
+  font: 400 15px var(--data);
+  transform: scale(var(--s, 1));  /* product.js shrinks it a bit each press */
+  transform-origin: center;
+  transition: transform .35s ease;
+}
+
+/* once the cursor gets near, it leaves the panel and runs around the whole screen */
+.auth-btn.run {
+  position: fixed;
+  z-index: 30;
+  margin: 0;
+  transition: left .22s cubic-bezier(.2, .9, .3, 1), top .22s cubic-bezier(.2, .9, .3, 1), transform .35s ease;
+}
+
+.auth-btn:hover,
+.auth-btn:focus-visible {
+  background: #fff;
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* what the site says back */
+.auth-say {
+  margin-top: 10px;
+  min-height: 20px;
+  font: 400 13px/20px var(--data);
+  color: var(--red);
+}
+
+/* =====================================================
+   YOU MAY ALSO LIKE  (reuses the home page's cards)
+   ===================================================== */
+.best.more {
+  padding-top: 65px;
+}
+
+.best.more h2 {
+  text-align: left;
+  padding-left: 55px;
+}
+
+/* =====================================================
+   PHONES
+   ===================================================== */
+@media (max-width: 900px) {
+  .pdp {
+    grid-template-columns: 1fr;
+  }
+
+  .pdp-photos {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: none;
+    aspect-ratio: auto;
+  }
+
+  .pdp-photos img {
+    aspect-ratio: 4 / 5;
+    height: auto;
+  }
+
+  .pdp-info {
+    position: static;
+  }
+
+  .best.more h2 {
+    padding-left: 24px;
+  }
+}
+
+@media (max-width: 520px) {
+  .pdp-photos {
+    grid-template-columns: 1fr;
+  }
+}
